@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Personal Finance Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Include Chart.js library -->
+    <script src="js/lib/chart.min.js"></script>
+</head>
+<body>
+<header class="app-header">
+    <h1>Dashboard</h1>
+    <nav>
+        <span id="user-greeting">Welcome!</span> |
+        <a href="profile.html">Profile</a> |
+        <button id="logout-button" class="btn-link">Logout</button>
+    </nav>
+</header>
+
+<main class="container dashboard-grid">
+
+    <!-- Summary Section -->
+    <section class="card summary-section">
+        <h2>Summary</h2>
+        <div class="filter-controls">
+            <label for="summary-month">Month:</label>
+            <input type="month" id="summary-month"> <!-- Format YYYY-MM -->
+            <button id="view-summary-button" class="btn btn-small">View</button>
+            <button id="view-yearly-summary-button" class="btn btn-small">View Year</button>
+        </div>
+        <div id="summary-content">
+            <p>Total Income: <span id="summary-income">-.--</span></p>
+            <p>Total Expenses: <span id="summary-expenses">-.--</span></p>
+            <p>Balance: <span id="summary-balance">-.--</span></p>
+            <p id="summary-error" class="error-message" style="display: none;"></p>
+        </div>
+    </section>
+
+    <!-- Add Transaction Section -->
+    <section class="card add-transaction-section">
+        <h2>Add Transaction</h2>
+        <form id="add-transaction-form">
+            <input type="hidden" id="edit-transaction-id"> <!-- Hidden field for editing -->
+            <div class="form-group">
+                <label for="transaction-type">Type:</label>
+                <select id="transaction-type" name="type" required>
+                    <option value="EXPENSE">Expense</option>
+                    <option value="INCOME">Income</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="transaction-amount">Amount:</label>
+                <input type="number" id="transaction-amount" name="amount" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="transaction-category">Category:</label>
+                <select id="transaction-category" name="categoryId" required>
+                    <!-- Options will be loaded dynamically by JS -->
+                    <option value="">Loading categories...</option>
+                </select>
+                <button type="button" id="manage-categories-button" class="btn-link">Manage Categories</button>
+            </div>
+            <div class="form-group">
+                <label for="transaction-date">Date:</label>
+                <input type="date" id="transaction-date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="transaction-description">Description (Optional):</label>
+                <input type="text" id="transaction-description" name="description">
+            </div>
+            <button type="submit" id="add-update-button" class="btn">Add Transaction</button>
+            <button type="button" id="cancel-edit-button" class="btn btn-secondary" style="display: none;">Cancel Edit</button>
+            <p id="transaction-error" class="error-message" style="display: none;"></p>
+            <p id="transaction-success" class="success-message" style="display: none;"></p>
+        </form>
+    </section>
+
+    <!-- Transactions List Section -->
+    <section class="card transactions-list-section">
+        <h2>Recent Transactions</h2>
+        <!-- Add filtering options if needed -->
+        <table id="transactions-table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="transactions-tbody">
+            <!-- Rows will be loaded dynamically by JS -->
+            <tr><td colspan="6">Loading transactions...</td></tr>
+            </tbody>
+        </table>
+        <p id="transactions-error" class="error-message" style="display: none;"></p>
+    </section>
+
+    <!-- Category Chart Section -->
+    <section class="card category-chart-section">
+        <h2>Category Spending (Monthly)</h2>
+        <div class="filter-controls">
+            <label for="chart-month">Month:</label>
+            <input type="month" id="chart-month"> <!-- Format YYYY-MM -->
+            <button id="view-chart-button" class="btn btn-small">View Chart</button>
+        </div>
+        <div class="chart-container">
+            <canvas id="category-pie-chart"></canvas>
+        </div>
+        <p id="chart-error" class="error-message" style="display: none;"></p>
+        <p id="chart-nodata" class="info-message" style="display: none;">No expense data for this period.</p>
+    </section>
+
+    <!-- Category Management Modal (Hidden by default) -->
+    <div id="category-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" id="close-category-modal">×</span>
+            <h2>Manage Categories</h2>
+            <form id="add-category-form">
+                <input type="text" id="new-category-name" placeholder="New category name" required>
+                <button type="submit" class="btn btn-small">Add</button>
+                <p id="category-add-error" class="error-message" style="display: none;"></p>
+            </form>
+            <ul id="category-list">
+                <!-- Categories loaded by JS -->
+                <li>Loading...</li>
+            </ul>
+            <p id="category-list-error" class="error-message" style="display: none;"></p>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2023 Your Company</p>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script> <!-- Needed for logout and checking login status -->
+<script src="js/transactions.js"></script>
+<script src="js/reports.js"></script>
+<!-- Include profile.js if manage categories involves user data -->
+</body>
+</html>
