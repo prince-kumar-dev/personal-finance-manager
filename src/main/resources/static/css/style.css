@@ -1,3 +1,5 @@
+/* src/main/resources/static/css/style.css */
+
 /* --- CSS Variables (Modern Approach for Theming) --- */
 :root {
     --primary-color: #007bff; /* Blue */
@@ -318,6 +320,7 @@ th, td {
     vertical-align: top;
     border-top: 1px solid var(--border-color);
     text-align: left;
+    white-space: nowrap; /* Prevent text wrapping in cells, helps with overflow */
 }
 
 thead th {
@@ -413,6 +416,11 @@ td .btn { /* Reduce margin for buttons inside table cells */
     width: 100%;
 }
 
+/* **FIX**: Add horizontal scroll to the table's container */
+.transactions-list-section {
+    overflow-x: auto; /* Enable horizontal scrolling ONLY when content overflows */
+}
+
 /* --- Profile Specific --- */
 #profile-info p {
     font-size: 1.1rem;
@@ -426,7 +434,7 @@ td .btn { /* Reduce margin for buttons inside table cells */
 
 /* --- Modal (for Category Management) --- */
 .modal {
-    display: none; /* Hidden by default */
+    /* display: none; */ /* Controlled by JS */
     position: fixed; /* Stay in place */
     z-index: 1050; /* Sit on top */
     left: 0;
@@ -567,12 +575,9 @@ td .btn { /* Reduce margin for buttons inside table cells */
         width: 100%;
     }
 
-    /* Make table more responsive if needed (e.g., horizontal scroll or card view) */
-    .transactions-list-section {
-        overflow-x: auto; /* Add horizontal scroll for table */
-    }
+    /* **FIX**: Explicit min-width ensures table pushes container on small screens */
     #transactions-table {
-        min-width: 600px; /* Ensure table has minimum width for columns */
+        min-width: 600px; /* Force minimum width, triggering the overflow-x scrollbar */
     }
 
     #category-list button {
